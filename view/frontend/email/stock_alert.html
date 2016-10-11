@@ -1,0 +1,30 @@
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Products back in stock alert"}} @-->
+<!--@vars {
+"var product|raw":"Alert Data Grid",
+"template config_path=\"design\/email\/footer_template\"":"Email Footer Template",
+"template config_path=\"design\/email\/header_template\"":"Email Header Template"
+} @-->
+<style>
+    td.main-content{
+        text-align: left;
+    }
+    .greeting, .product_preorder_text{
+        font-size: 12px;
+    }
+    .price-wrapper > span{
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 12px !important;
+    }
+</style>
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">Hi,</p>
+{{var product|raw}}
+
+{{template config_path="design/email/footer_template"}}

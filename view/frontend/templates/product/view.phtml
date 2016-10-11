@@ -1,0 +1,96 @@
+<?php /* @var $block \Magento\ProductAlert\Block\Product\View */ ?>
+<style>
+    #stock-notifier {
+        color:#000;
+        cursor:pointer;
+        display:block;
+        font-family:'Avenir LT Std', sans-serif!important;
+        font-size:13px;
+        font-weight:400;
+        letter-spacing:.5px;
+        text-align:center;
+        text-decoration:underline;
+        width:100%;
+    }
+    #stock-notifier-sign-up-msg {
+        display:block;
+        font-weight:500;
+        margin-top:5px;
+        text-align:center;
+        width:100%;
+    }
+    #stock-notifier-sign-up-msg.error {
+        color:red;
+    }
+
+    #stock-notifier-sign-up-msg.success {
+        text-align:left;
+    }
+    #stock-notifier-sign-up.btn3 {
+        margin-top:15px;
+        text-align:center;
+        width:100%;
+    }
+    .stock-notifier-form {
+        border-bottom:1px solid #000;
+        color:#000;
+        display:none;
+        font-family:'Avenir LT Std', sans-serif!important;
+        font-size:13px;
+        font-weight:400;
+        letter-spacing:.5px;
+        padding-bottom:20px;
+    }
+</style>
+<div class="product alert <?php echo $block->getHtmlClass() ?>">
+    <span id="stock-notifier">
+        <?php echo $block->escapeHtml(__($block->getSignupLabel())); ?>
+    </span>
+</div>
+<div class="stock-notifier-form">
+    <span class="stock-notifier-instructions">Please enter your email address below.</span>
+    <input type="email" id="stock-notifier-sign-up-email" value="<?php echo $this->getCustomerEmail() ?>">
+    <button id="stock-notifier-sign-up" class="btn3">SIGN ME UP TO THE WAITLIST</button>
+</div>
+<script>
+    require([
+        'jquery',
+        'mage/mage'
+    ], function ($) {
+        'use strict';
+        $('#stock-notifier').click(function () {
+            $('.stock-notifier-form').css('display', 'block');
+            $('#stock-notifier-sign-up').click(function () {
+                var superAttributes = {};
+                $('.super-attribute-select').each(function () {
+                    var s = $(this).attr('name');
+                    var id = s.slice(s.indexOf('[') + 1, s.indexOf(']'));
+                    var value = $(this).val();
+                    superAttributes[id] = value;
+                });
+                var data = {
+                    'email': $('#stock-notifier-sign-up-email').val(),
+                    'pid': <?php echo $block->getProduct()->getId() ?> };
+                if (!$.isEmptyObject(superAttributes)) {
+                    data.super = superAttributes;
+                }
+                $.ajax({
+                    url: '/subscribe-stock',
+                    data: data,
+                    method: 'post',
+                    type: 'json'
+                }).success(function (data) {
+                    if (data.success == true) {
+                        $('#stock-notifier-sign-up-msg').remove();
+                        $('#stock-notifier-sign-up').before('<span class="stock-notifier-sign-up-msg success" id="stock-notifier-sign-up-msg">' + data.msg + '</span>')
+                        $('#stock-notifier-sign-up, #stock-notifier-sign-up-email, #stock-notifier, .stock-notifier-instructions').hide();
+                    } else {
+                        $('#stock-notifier-sign-up-msg').remove();
+                        $('#stock-notifier-sign-up').before('<span class="stock-notifier-sign-up-msg error" id="stock-notifier-sign-up-msg">' + data.msg + '</span>')
+                    }
+                });
+            });
+
+        });
+    });
+</script>

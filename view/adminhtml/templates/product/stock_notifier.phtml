@@ -1,0 +1,31 @@
+<div class="stock-notifier-form">
+    <input type="email" id="stock-notifier-email" class="admin__control-text" placeholder="me@gmail.com">
+    <button id="stock-notifier-btn" class="action-default">Add to wait list</button>
+</div>
+<script>
+    require([
+        'jquery',
+        'mage/mage'
+    ], function ($) {
+        $('#stock-notifier-btn').click(function () {
+            var data = {
+                'email': $('#stock-notifier-email').val(),
+                'pid': <?php echo $block->getProductId() ?>
+            };
+            $.ajax({
+                url: '/subscribe-stock',
+                data: data,
+                method: 'post',
+                type: 'json'
+            }).success(function (data) {
+                if (data.success == true) {
+                    $('.stock-notifier-form').empty();
+                    $('.stock-notifier-form').html('<p>The email has been added to the wait list.</p>')
+                } else {
+                    $('.stock-notifier-error').remove();
+                    $('#stock-notifier-btn').after('<br><span style="color: #FF0000" class="stock-notifier-error">' + data.msg + '</span>')
+                }
+            });
+        });
+    });
+</script>

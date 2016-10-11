@@ -1,0 +1,32 @@
+<?php $product = $block->getProduct(); ?>
+<p class="product_preorder_text">
+     Just a note to let you know that the <strong class="product_name product name"><?= $block->escapeHtml($product->getName()) ?></strong> is in stock!
+    <strong class="product name"><br /><br /><a class="product_name_link" style="color: #000000 !important" href="<?= /* @escapeNotVerified */  $product->getProductUrl() ?>">Click here</a></strong> to purchase.
+</p>
+<table>
+    <tr>
+        <td class="col photo">
+            <a href="<?= /* @escapeNotVerified */  $product->getProductUrl() ?>" title="<?= $block->escapeHtml($product->getName()) ?>" class="product photo">
+                <img src="<?php echo $block->getImageUrl($product); ?>" alt="<?= $block->escapeHtml($product->getName()) ?> photo">
+            </a>
+        </td>
+        <td class="col item">
+            <?php if ($shortDescription = $block->getFilteredContent($product->getShortDescription())): ?>
+                <p><small><?= /* @escapeNotVerified */  $shortDescription ?></small></p>
+            <?php endif; ?>
+            <?= $block->getProductPriceHtml(
+                $product,
+                \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
+                \Magento\Framework\Pricing\Render::ZONE_EMAIL,
+                [
+                    'display_label' => ''
+                ]
+            );
+            ?>
+        </td>
+    </tr>
+</table>
+<p class="product_thanks">
+    <strong>Thank you!</strong><br/>
+    <strong class="team_tde">Team TDE</strong>
+</p>

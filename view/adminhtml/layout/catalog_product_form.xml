@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+        <referenceContainer name="product_form">
+                <block name="stock-notifier" class="Tde\StockNotifier\Block\Adminhtml\Catalog\Product\Edit\StockNotifier" template="product/stock_notifier.phtml">
+                        <arguments>
+                                <argument name="config" xsi:type="array">
+                                        <item name="label" xsi:type="string" translate="true">Wait List</item>
+                                        <item name="collapsible" xsi:type="boolean">true</item>
+                                        <item name="opened" xsi:type="boolean">false</item>
+                                        <item name="sortOrder" xsi:type="string">150</item>
+                                        <item name="canShow" xsi:type="boolean">true</item>
+                                        <item name="componentType" xsi:type="string">fieldset</item>
+                                </argument>
+                        </arguments>
+                </block>
+        </referenceContainer>
+</layout>
